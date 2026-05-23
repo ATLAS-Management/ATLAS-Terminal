@@ -21,11 +21,13 @@
         }
 
         .logo-container {
-            display: flex;
-            justify-content: flex-start;
-            gap: 40px;
-            white-space: pre;
-            align-items: flex-start;
+            white-space: nowrap;
+        }
+
+        .logo-container pre {
+            display: inline-block;
+            vertical-align: top;
+            margin: 0 40px 0 0;
         }
 
         #output {
@@ -60,18 +62,17 @@
 
 <div id="header">
 
-<div class="logo-container">
+    <div class="logo-container">
 
-<pre>
+        <pre>
   ▄▄▄▄   ▄▄▄▄▄▄▄▄▄ ▄▄▄        ▄▄▄▄    ▄▄▄▄▄▄▄ ▄▄▄    ▄▄▄  ▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄▄▄ 
 ▄██▀▀██▄ ▀▀▀███▀▀▀ ███      ▄██▀▀██▄ █████▀▀▀ ████▄  ███ ███▀▀▀▀▀ ▀▀▀███▀▀▀ 
 ███  ███    ███    ███      ███  ███  ▀████▄  ███▀██▄███ ███▄▄       ███    
 ███▀▀███    ███    ███      ███▀▀███    ▀████ ███  ▀████ ███         ███    
 ███  ███    ███    ████████ ███  ███ ███████▀ ███    ███ ▀███████    ███    
-</pre>
+        </pre>
 
-<pre>
-                         
+        <pre>
         :=-  -+=         
         *##+=###. ..     
     =#+=####*#######-    
@@ -85,15 +86,14 @@
       .#####*######-     
       :##=:+##* .+=.     
         .   ++:          
-                         
-</pre>
+        </pre>
 
-</div>
+    </div>
 
-ATLAS INTERNAL NETWORK v1.0
-AUTHORIZED PERSONNEL ONLY
+    ATLAS INTERNAL NETWORK v1.0
+    AUTHORIZED PERSONNEL ONLY
 
-Type "help" for available commands.
+    Type "help" for available commands.
 
 </div>
 
