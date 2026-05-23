@@ -32,6 +32,10 @@
             align-items: center;
         }
 
+        #prompt {
+            margin-right: 5px;
+        }
+
         input {
             background: black;
             border: none;
@@ -54,12 +58,10 @@ AUTHORIZED PERSONNEL ONLY
 Type "help" for available commands.
 </div>
 
-<div id="output">
-SYSTEM READY
-</div>
+<div id="output">SYSTEM READY</div>
 
 <div id="input-area">
-    >
+    <div id="prompt">></div>
     <input type="text" id="commandInput" autofocus>
 </div>
 
@@ -76,7 +78,7 @@ input.addEventListener("keydown", function(event) {
 
         if (command === "help") {
 
-            output.innerHTML =
+            output.textContent =
 `AVAILABLE COMMANDS
 
 help
@@ -89,7 +91,7 @@ clear`;
 
         else if (command === "dir") {
 
-            output.innerHTML =
+            output.textContent =
 `DIRECTORIES
 
 personnel.txt
@@ -99,7 +101,7 @@ incident.txt`;
 
         else if (command === "open personnel.txt") {
 
-            output.innerHTML =
+            output.textContent =
 `PERSONNEL FILE
 
 Name: Dr. Evelyn Ward
@@ -110,7 +112,7 @@ Clearance: Level 4`;
 
         else if (command === "open incident.txt") {
 
-            output.innerHTML =
+            output.textContent =
 `INCIDENT REPORT
 
 Designation: INC-042
@@ -121,20 +123,20 @@ Security Status: LOCKDOWN`;
 
         else if (command === "clear") {
 
-            output.innerHTML = "";
+            output.textContent = "";
 
         }
 
         else if (command === "") {
 
-            output.innerHTML =
+            output.textContent =
 `NO COMMAND ENTERED`;
 
         }
 
         else {
 
-            output.innerHTML =
+            output.textContent =
 `UNKNOWN COMMAND
 
 Type "help" for available commands.`;
