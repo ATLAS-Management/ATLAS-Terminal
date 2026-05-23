@@ -7,23 +7,29 @@
     <style>
 
         body {
-            <body>
+            background-color: black;
+            color: #00ff66;
+            font-family: monospace;
+            padding: 20px;
+            margin: 0;
+        }
 
-<div id="header">
-ATLAS INTERNAL NETWORK v1.0
-AUTHORIZED PERSONNEL ONLY
+        #header {
+            border-bottom: 1px solid #00ff66;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+        }
 
-Type "help" for commands.
-</div>
+        #output {
+            min-height: 300px;
+            white-space: pre-wrap;
+            margin-bottom: 20px;
+        }
 
-<div id="output">
-SYSTEM READY
-</div>
-
-<div id="input-area">
-    >
-    <input type="text" id="commandInput" autofocus>
-</div>
+        #input-area {
+            display: flex;
+            align-items: center;
         }
 
         input {
@@ -32,7 +38,8 @@ SYSTEM READY
             color: #00ff66;
             font-family: monospace;
             outline: none;
-            width: 90%;
+            width: 100%;
+            font-size: 16px;
         }
 
     </style>
@@ -40,14 +47,18 @@ SYSTEM READY
 
 <body>
 
-<div id="output">
+<div id="header">
 ATLAS INTERNAL NETWORK v1.0
+AUTHORIZED PERSONNEL ONLY
 
 Type "help" for available commands.
-
 </div>
 
-<div>
+<div id="output">
+SYSTEM READY
+</div>
+
+<div id="input-area">
     >
     <input type="text" id="commandInput" autofocus>
 </div>
@@ -61,74 +72,77 @@ input.addEventListener("keydown", function(event) {
 
     if (event.key === "Enter") {
 
-        const command = input.value.trim();
-
-        output.innerHTML += "\n> " + command + "\n";
+        const command = input.value.trim().toLowerCase();
 
         if (command === "help") {
 
-            output.innerHTML +=
+            output.innerHTML =
 `AVAILABLE COMMANDS
 
 help
 dir
 open personnel.txt
 open incident.txt
-
-`;
+clear`;
 
         }
 
         else if (command === "dir") {
 
-            output.innerHTML +=
+            output.innerHTML =
 `DIRECTORIES
 
 personnel.txt
-incident.txt
-
-`;
+incident.txt`;
 
         }
 
         else if (command === "open personnel.txt") {
 
-            output.innerHTML +=
+            output.innerHTML =
 `PERSONNEL FILE
 
 Name: Dr. Evelyn Ward
 Role: Acting Site Director
-Clearance: Level 4
-
-`;
+Clearance: Level 4`;
 
         }
 
         else if (command === "open incident.txt") {
 
-            output.innerHTML +=
+            output.innerHTML =
 `INCIDENT REPORT
 
 Designation: INC-042
 Site: Blacksite-12
-Security Status: LOCKDOWN
+Security Status: LOCKDOWN`;
 
-`;
+        }
+
+        else if (command === "clear") {
+
+            output.innerHTML = "";
+
+        }
+
+        else if (command === "") {
+
+            output.innerHTML =
+`NO COMMAND ENTERED`;
 
         }
 
         else {
 
-            output.innerHTML +=
+            output.innerHTML =
 `UNKNOWN COMMAND
 
-`;
+Type "help" for available commands.`;
 
         }
 
         input.value = "";
 
-        window.scrollTo(0, document.body.scrollHeight);
     }
 
 });
