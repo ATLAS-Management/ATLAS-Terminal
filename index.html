@@ -14,13 +14,8 @@
             margin: 0;
         }
 
-        .screen {
-            display: none;
-        }
-
-        .active {
-            display: block;
-        }
+        .screen { display: none; }
+        .active { display: block; }
 
         #boot {
             white-space: pre-wrap;
@@ -44,9 +39,7 @@
             align-items: center;
         }
 
-        #prompt {
-            margin-right: 5px;
-        }
+        #prompt { margin-right: 5px; }
 
         input {
             background: black;
@@ -82,17 +75,17 @@
 
 <body>
 
-<!-- BOOT SCREEN -->
+<!-- BOOT -->
 <div id="boot" class="screen active"></div>
 
-<!-- LOGIN SCREEN -->
+<!-- LOGIN -->
 <div id="login" class="screen">
 
     <div id="login-box">
         <div>ATLAS AUTHENTICATION REQUIRED</div><br>
 
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
+        <input id="username" placeholder="Username">
+        <input id="password" type="password" placeholder="Password">
 
         <button onclick="login()">ACCESS</button>
 
@@ -101,7 +94,7 @@
 
 </div>
 
-<!-- TERMINAL SCREEN -->
+<!-- TERMINAL -->
 <div id="terminal" class="screen">
 
     <div id="header">
@@ -125,139 +118,154 @@ Type "help" for available commands.
 
     <div id="input-area">
         <div id="prompt">></div>
-        <input type="text" id="commandInput" autofocus>
+        <input id="commandInput">
     </div>
 
 </div>
 
 <script>
 
-const bootText = [
-"[SYSTEM] Initialising ATLAS kernel...",
-"[SYSTEM] Loading secure modules...",
-"[SYSTEM] Verifying blacksite credentials...",
-"[SYSTEM] Establishing encrypted channel...",
-"[SYSTEM] Checking anomaly containment logs...",
-"[SYSTEM] Routing through AYRE core...",
-"[SYSTEM] Boot complete.",
-"",
-"Redirecting to authentication..."
-];
+function bootLineEffect(text, cb) {
+    const boot = document.getElementById("boot");
+    let i = 0;
 
-let bootIndex = 0;
-const bootDiv = document.getElementById("boot");
-
-function runBoot() {
-
-    if (bootIndex < bootText.length) {
-        bootDiv.textContent += bootText[bootIndex] + "\n";
-        bootIndex++;
-        setTimeout(runBoot, 500);
-    } else {
-        setTimeout(() => {
-            document.getElementById("boot").classList.remove("active");
-            document.getElementById("login").classList.add("active");
-        }, 800);
-    }
+    const interval = setInterval(() => {
+        boot.textContent += text[i] + "\n";
+        i++;
+        if (i >= text.length) {
+            clearInterval(interval);
+            setTimeout(cb, 300);
+        }
+    }, 120); // FAST boot speed
 }
 
-runBoot();
+// BOOT SEQUENCE (more lines, faster)
+window.onload = function () {
+
+    const bootText = [
+        "[BOOT] INIT ATLAS CORE",
+        "[BOOT] RAM CHECK OK",
+        "[BOOT] CPU LINK STABLE",
+        "[BOOT] SECURE CHANNELS OPEN",
+        "[BOOT] AYRE CORE SYNC",
+        "[BOOT] BLACKSITE DATABASE LOADED",
+        "[BOOT] ANOMALY INDEX READY",
+        "[BOOT] USER ENVIRONMENT BUILT",
+        "[BOOT] ENCRYPTION LAYER ACTIVE",
+        "[BOOT] FINALISING SYSTEM",
+        "[BOOT] COMPLETE"
+    ];
+
+    bootLineEffect(bootText, () => {
+
+        document.getElementById("boot").classList.remove("active");
+        document.getElementById("login").classList.add("active");
+
+    });
+};
 
 // LOGIN
 function login() {
 
-    const user = document.getElementById("username").value;
-    const pass = document.getElementById("password").value;
+    const u = document.getElementById("username").value;
+    const p = document.getElementById("password").value;
+
     const status = document.getElementById("login-status");
 
-    if (user === "admin" && pass === "atlas") {
+    if (u === "admin" && p === "atlas") {
 
         document.getElementById("login").classList.remove("active");
         document.getElementById("terminal").classList.add("active");
 
-        initTerminal();
+        runTRexEffect(() => initTerminal());
 
     } else {
         status.textContent = "ACCESS DENIED";
     }
 }
 
-// TERMINAL LOGIC
+// T-REX STYLE FAST LINE DROP EFFECT
+function runTRexEffect(done) {
+
+    const lines = [
+        "T-REX PROTOCOL ACTIVE",
+        "SCANNING INTERFACE",
+        "AUTHORIZING NODE",
+        "CLEARANCE VERIFIED"
+    ];
+
+    const temp = document.createElement("div");
+    temp.style.whiteSpace = "pre-wrap";
+    temp.style.marginBottom = "20px";
+
+    const terminal = document.getElementById("terminal");
+    terminal.insertBefore(temp, document.getElementById("output"));
+
+    let i = 0;
+
+    const interval = setInterval(() => {
+
+        temp.textContent += lines[i] + "\n";
+        i++;
+
+        if (i >= lines.length) {
+            clearInterval(interval);
+            setTimeout(() => {
+                temp.remove();
+                done();
+            }, 300);
+        }
+
+    }, 80);
+}
+
+// TERMINAL
 function initTerminal() {
 
-const input = document.getElementById("commandInput");
-const output = document.getElementById("output");
+    const input = document.getElementById("commandInput");
+    const output = document.getElementById("output");
 
-input.addEventListener("keydown", function(event) {
+    function showTRex() {
 
-    if (event.key === "Enter") {
-
-        const command = input.value.trim().toLowerCase();
-
-        if (command === "help") {
-
-            output.textContent =
-`AVAILABLE COMMANDS
-
-help
-dir
-open personnel.txt
-open incident.txt
-clear`;
-
-        }
-
-        else if (command === "dir") {
-
-            output.textContent =
-`DIRECTORIES
-
-personnel.txt
-incident.txt`;
-
-        }
-
-        else if (command === "open personnel.txt") {
-
-            output.textContent =
-`PERSONNEL FILE
-
-Name: Dr. Evelyn Ward
-Role: Acting Site Director
-Clearance: Level 4`;
-
-        }
-
-        else if (command === "open incident.txt") {
-
-            output.textContent =
-`INCIDENT REPORT
-
-Designation: INC-042
-Site: Blacksite-12
-Security Status: LOCKDOWN`;
-
-        }
-
-        else if (command === "clear") {
-            output.textContent = "";
-        }
-
-        else if (command === "") {
-            output.textContent = "NO COMMAND ENTERED";
-        }
-
-        else {
-            output.textContent =
-`UNKNOWN COMMAND
-
-Type "help" for available commands.`;
-        }
-
-        input.value = "";
+        runTRexEffect(() => {});
     }
 
-});
+    input.addEventListener("keydown", function (event) {
+
+        if (event.key === "Enter") {
+
+            const cmd = input.value.trim().toLowerCase();
+
+            let result = "";
+
+            if (cmd === "help") {
+                result = `help\ndir\nopen personnel.txt\nopen incident.txt\nclear`;
+            }
+            else if (cmd === "dir") {
+                result = `personnel.txt\nincident.txt`;
+            }
+            else if (cmd === "open personnel.txt") {
+                result = `Dr. Evelyn Ward\nActing Site Director`;
+            }
+            else if (cmd === "open incident.txt") {
+                result = `INC-042\nBLACKSITE-12\nLOCKDOWN ACTIVE`;
+            }
+            else if (cmd === "clear") {
+                result = "";
+            }
+            else {
+                result = "UNKNOWN COMMAND";
+            }
+
+            // TRex effect on every menu change
+            runTRexEffect(() => {
+                output.textContent = result;
+            });
+
+            input.value = "";
+        }
+
+    });
 
 }
 
