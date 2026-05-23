@@ -14,6 +14,18 @@
             margin: 0;
         }
 
+        .screen {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        #boot {
+            white-space: pre-wrap;
+        }
+
         #header {
             border-bottom: 1px solid #00ff66;
             padding-bottom: 10px;
@@ -46,12 +58,53 @@
             font-size: 16px;
         }
 
+        #login-box {
+            margin-top: 100px;
+        }
+
+        #login-box input {
+            display: block;
+            margin-bottom: 10px;
+            width: 300px;
+        }
+
+        button {
+            background: black;
+            border: 1px solid #00ff66;
+            color: #00ff66;
+            padding: 5px 10px;
+            font-family: monospace;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 
 <body>
 
-<div id="header">
+<!-- BOOT SCREEN -->
+<div id="boot" class="screen active"></div>
+
+<!-- LOGIN SCREEN -->
+<div id="login" class="screen">
+
+    <div id="login-box">
+        <div>ATLAS AUTHENTICATION REQUIRED</div><br>
+
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+
+        <button onclick="login()">ACCESS</button>
+
+        <div id="login-status"></div>
+    </div>
+
+</div>
+
+<!-- TERMINAL SCREEN -->
+<div id="terminal" class="screen">
+
+    <div id="header">
 
 <pre>
   ▄▄▄▄   ▄▄▄▄▄▄▄▄▄ ▄▄▄        ▄▄▄▄    ▄▄▄▄▄▄▄ ▄▄▄    ▄▄▄  ▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄▄▄ 
@@ -61,21 +114,76 @@
 ███  ███    ███    ████████ ███  ███ ███████▀ ███    ███ ▀███████    ███    
 </pre>
 
-ATLAS INTERNAL NETWORK v1
+ATLAS INTERNAL NETWORK v1.0  
 AUTHORIZED PERSONNEL ONLY  
 
 Type "help" for available commands.
 
-</div>
+    </div>
 
-<div id="output">SYSTEM READY</div>
+    <div id="output">SYSTEM READY</div>
 
-<div id="input-area">
-    <div id="prompt">></div>
-    <input type="text" id="commandInput" autofocus>
+    <div id="input-area">
+        <div id="prompt">></div>
+        <input type="text" id="commandInput" autofocus>
+    </div>
+
 </div>
 
 <script>
+
+const bootText = [
+"[SYSTEM] Initialising ATLAS kernel...",
+"[SYSTEM] Loading secure modules...",
+"[SYSTEM] Verifying blacksite credentials...",
+"[SYSTEM] Establishing encrypted channel...",
+"[SYSTEM] Checking anomaly containment logs...",
+"[SYSTEM] Routing through AYRE core...",
+"[SYSTEM] Boot complete.",
+"",
+"Redirecting to authentication..."
+];
+
+let bootIndex = 0;
+const bootDiv = document.getElementById("boot");
+
+function runBoot() {
+
+    if (bootIndex < bootText.length) {
+        bootDiv.textContent += bootText[bootIndex] + "\n";
+        bootIndex++;
+        setTimeout(runBoot, 500);
+    } else {
+        setTimeout(() => {
+            document.getElementById("boot").classList.remove("active");
+            document.getElementById("login").classList.add("active");
+        }, 800);
+    }
+}
+
+runBoot();
+
+// LOGIN
+function login() {
+
+    const user = document.getElementById("username").value;
+    const pass = document.getElementById("password").value;
+    const status = document.getElementById("login-status");
+
+    if (user === "admin" && pass === "atlas") {
+
+        document.getElementById("login").classList.remove("active");
+        document.getElementById("terminal").classList.add("active");
+
+        initTerminal();
+
+    } else {
+        status.textContent = "ACCESS DENIED";
+    }
+}
+
+// TERMINAL LOGIC
+function initTerminal() {
 
 const input = document.getElementById("commandInput");
 const output = document.getElementById("output");
@@ -132,32 +240,26 @@ Security Status: LOCKDOWN`;
         }
 
         else if (command === "clear") {
-
             output.textContent = "";
-
         }
 
         else if (command === "") {
-
-            output.textContent =
-`NO COMMAND ENTERED`;
-
+            output.textContent = "NO COMMAND ENTERED";
         }
 
         else {
-
             output.textContent =
 `UNKNOWN COMMAND
 
 Type "help" for available commands.`;
-
         }
 
         input.value = "";
-
     }
 
 });
+
+}
 
 </script>
 
