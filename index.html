@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ATLAS Terminal</title>
+
+    <style>
+
+        body {
+            background-color: black;
+            color: #00ff66;
+            font-family: monospace;
+            padding: 20px;
+        }
+
+        #output {
+            margin-bottom: 10px;
+            white-space: pre-wrap;
+        }
+
+        input {
+            background: black;
+            border: none;
+            color: #00ff66;
+            font-family: monospace;
+            outline: none;
+            width: 90%;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div id="output">
+ATLAS INTERNAL NETWORK v1.0
+
+Type "help" for available commands.
+
+</div>
+
+<div>
+    >
+    <input type="text" id="commandInput" autofocus>
+</div>
+
+<script>
+
+const input = document.getElementById("commandInput");
+const output = document.getElementById("output");
+
+input.addEventListener("keydown", function(event) {
+
+    if (event.key === "Enter") {
+
+        const command = input.value.trim();
+
+        output.innerHTML += "\n> " + command + "\n";
+
+        if (command === "help") {
+
+            output.innerHTML +=
+`AVAILABLE COMMANDS
+
+help
+dir
+open personnel.txt
+open incident.txt
+
+`;
+
+        }
+
+        else if (command === "dir") {
+
+            output.innerHTML +=
+`DIRECTORIES
+
+personnel.txt
+incident.txt
+
+`;
+
+        }
+
+        else if (command === "open personnel.txt") {
+
+            output.innerHTML +=
+`PERSONNEL FILE
+
+Name: Dr. Evelyn Ward
+Role: Acting Site Director
+Clearance: Level 4
+
+`;
+
+        }
+
+        else if (command === "open incident.txt") {
+
+            output.innerHTML +=
+`INCIDENT REPORT
+
+Designation: INC-042
+Site: Blacksite-12
+Security Status: LOCKDOWN
+
+`;
+
+        }
+
+        else {
+
+            output.innerHTML +=
+`UNKNOWN COMMAND
+
+`;
+
+        }
+
+        input.value = "";
+
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+});
+
+</script>
+
+</body>
+</html>
